@@ -3,15 +3,14 @@ import numpy as np
 import cv2
 from matplotlib.widgets  import RectangleSelector
 import matplotlib
-matplotlib.use('Agg')
 
 img_source = cv2.imread('images/LFT_example.png')
-img_grayscale = cv2.cvtColor(img_source, cv2.COLOR_BGR2GRAY)
-_, img_binary = cv2.threshold(img_grayscale, 250, 255, cv2.THRESH_BINARY)
-spectrumContainers, _ = cv2.findContours(img_binary, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-print(len(spectrumContainers))
-
-# I = cv2.cvtColor(I, cv2.COLOR_BGR2RGB)
+# img_grayscale = cv2.cvtColor(img_source, cv2.COLOR_BGR2GRAY)
+# _, img_binary = cv2.threshold(img_grayscale, 250, 255, cv2.THRESH_BINARY)
+# spectrumContainers, _ = cv2.findContours(img_binary, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+# print(len(spectrumContainers))
+#
+# # I = cv2.cvtColor(I, cv2.COLOR_BGR2RGB)
 
 plt.imshow(cv2.cvtColor(img_source, cv2.COLOR_BGR2RGB))
 plt.show()
