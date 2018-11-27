@@ -10,10 +10,10 @@ bash:
 	docker exec -i -t $(DOCKER_CONTAINER_NAME) bash
 
 dev:
-	docker run --rm --name $(DOCKER_CONTAINER_NAME) -i -t $(DOCKER_PORTS) -v "$(shell pwd)$(DOCKER_MAPPED_VOLUMES)" $(DOCKER_ENV) $(DOCKER_NAMESPACE)/$(DOCKER_REPOSITORY):$(DOCKER_IMAGE_VERSION) /bin/bash -c "pip install --trusted-host pypi.python.org -r requirements.txt && python src/app.py"
+	docker run --rm --name $(DOCKER_CONTAINER_NAME) -i -t $(DOCKER_PORTS) -v "$(shell pwd)$(DOCKER_MAPPED_VOLUMES)" -v /tmp/.X11-unix:/tmp/.X11-unix:rw -e DISPLAY="192.168.0.8:0" $(DOCKER_ENV) $(DOCKER_NAMESPACE)/$(DOCKER_REPOSITORY):$(DOCKER_IMAGE_VERSION) /bin/bash -c "pip install --trusted-host pypi.python.org -r requirements.txt && python src/app.py"
 
 shell:
-	docker run --rm --name $(DOCKER_CONTAINER_NAME) -i -t $(DOCKER_PORTS) -v "$(shell pwd)$(DOCKER_MAPPED_VOLUMES)" $(DOCKER_ENV) $(DOCKER_NAMESPACE)/$(DOCKER_REPOSITORY):$(DOCKER_IMAGE_VERSION) /bin/bash
+	docker run --rm --name $(DOCKER_CONTAINER_NAME) -i -t $(DOCKER_PORTS) -v "$(shell pwd)$(DOCKER_MAPPED_VOLUMES)" -v /tmp/.X11-unix:/tmp/.X11-unix:rw -e DISPLAY="192.168.0.8:0" $(DOCKER_ENV) $(DOCKER_NAMESPACE)/$(DOCKER_REPOSITORY):$(DOCKER_IMAGE_VERSION) /bin/bash
 
 start:
 	docker run -d --name $(DOCKER_CONTAINER_NAME) $(DOCKER_PORTS) $(DOCKER_ENV) $(DOCKER_NAMESPACE)/$(DOCKER_REPOSITORY):$(DOCKER_IMAGE_VERSION)
