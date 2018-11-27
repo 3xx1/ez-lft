@@ -1,12 +1,15 @@
 # Use an official Python runtime as a parent image
 FROM python:2.7-slim
 RUN apt-get update -y
-RUN apt-get install -yq make cmake gcc g++ unzip wget build-essential gcc zlib1g-dev
 
+# Linux Dependencies
+RUN apt-get install -yq make cmake gcc g++ unzip wget build-essential gcc zlib1g-dev tk-dev
+
+# Python Dependencies
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
-# OpenCV
+# OpenCV Compilation to Install
 RUN wget https://github.com/opencv/opencv/archive/2.4.13.3.zip \
 && unzip 2.4.13.3.zip \
 && mkdir /opencv-2.4.13.3/cmake_binary \
@@ -29,7 +32,7 @@ WORKDIR /ez-lft
 # Copy the current directory contents into the container at /ez-lft
 COPY . /ez-lft
 
-# Install Opencv
+# Install Opencv Python Package
 RUN apt-get install python-opencv -y
 
 # Make port 80 available to the world outside this container
