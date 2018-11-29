@@ -82,15 +82,15 @@ roi_test_avg_intensity = np.mean(g_ROI_test_crop)
 
 roi_background_avg_intensity = np.mean(g_ROI_background_crop)
 
-roi_corrected = (roi_test_avg_intensity - roi_background_avg_intensity)/(0 - roi_background_avg_intensity)
+roi_corrected_0to1 = (roi_test_avg_intensity - roi_background_avg_intensity)/(0 - roi_background_avg_intensity)
 
-print roi_corrected
+print roi_corrected_0to1
 print roi_control_avg_intensity
 print roi_test_avg_intensity
 print roi_background_avg_intensity
 
 # output to text file
-lines = ['roi_corrected', str(roi_corrected), 'roi_control_avg_intensity', str(roi_control_avg_intensity), 'roi_test_avg_intensity', str(roi_test_avg_intensity), 'roi_background_avg_intensity', str(roi_background_avg_intensity)]
+lines = ['roi_corrected_0to1', str(roi_corrected_0to1), 'roi_control_avg_intensity', str(roi_control_avg_intensity), 'roi_test_avg_intensity', str(roi_test_avg_intensity), 'roi_background_avg_intensity', str(roi_background_avg_intensity)]
 with open('output.txt', 'w') as file:
     file.write('\n'.join(lines))
 
