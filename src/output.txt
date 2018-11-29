@@ -1,0 +1,8 @@
+roi_corrected
+0.28380857613731764
+roi_control_avg_intensity
+34.27482993197279
+roi_test_avg_intensity
+41.78140589569161
+roi_background_avg_intensity
+58.33832199546485
