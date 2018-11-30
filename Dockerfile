@@ -3,17 +3,17 @@ FROM python:2.7-slim
 RUN apt-get update -y
 
 # Linux Dependencies
-RUN apt-get install -yq make cmake gcc g++ unzip wget build-essential gcc zlib1g-dev tk-dev
+RUN apt-get install -yq make cmake gcc g++ unzip wget build-essential gcc zlib1g-dev tk-dev libgtk2.0-dev pkg-config
 
 # Python Dependencies
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
 # OpenCV Compilation to Install
-RUN wget https://github.com/opencv/opencv/archive/2.4.13.3.zip \
-&& unzip 2.4.13.3.zip \
-&& mkdir /opencv-2.4.13.3/cmake_binary \
-&& cd /opencv-2.4.13.3/cmake_binary \
+RUN wget https://github.com/opencv/opencv/archive/3.4.3.zip \
+&& unzip 3.4.3.zip \
+&& mkdir /opencv-3.4.3/cmake_binary \
+&& cd /opencv-3.4.3/cmake_binary \
 && cmake -DWITH_QT=OFF \
         -DWITH_OPENGL=ON \
         -DFORCE_VTK=OFF \
@@ -23,8 +23,8 @@ RUN wget https://github.com/opencv/opencv/archive/2.4.13.3.zip \
         -DBUILD_EXAMPLES=OFF \
         -DENABLE_PRECOMPILED_HEADERS=OFF .. \
 && make install \
-&& rm /2.4.13.3.zip \
-&& rm -r /opencv-2.4.13.3
+&& rm /3.4.3.zip \
+&& rm -r /opencv-3.4.3
 
 # Set the working directory to /ez-lft
 WORKDIR /ez-lft
