@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
-from scipy import ndimage
+#from scipy import ndimage
 import cv2
 from matplotlib.widgets  import RectangleSelector
 import matplotlib
@@ -16,13 +16,14 @@ I = cv2.resize(I_raw, (638, 292))
 # HSV to extract edge
 hsv = cv2.cvtColor(I, cv2.COLOR_BGR2HSV)
 
+# thresholds to detect test lines as edge extraction by Canny
 lower_red = np.array([0,33,50])
 upper_red = np.array([10,255,255])
 
 mask = cv2.inRange(hsv, lower_red, upper_red)
 res = cv2.bitwise_and(I,I, mask= mask)
 
-#cv2.imshow('Original',I)
+# edges by the threshold
 edges = cv2.Canny(mask,100,200)
 copy = edges.copy()
 
