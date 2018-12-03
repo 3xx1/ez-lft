@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
+from scipy import ndimage
 import cv2
 from matplotlib.widgets  import RectangleSelector
 import matplotlib
@@ -8,32 +9,44 @@ import matplotlib
 Distance_control_test = 85
 Distance_control_background = 105
 
+# Upload and resize the scanned image
 I_raw = cv2.imread('images/LFT_example.png')
 I = cv2.resize(I_raw, (638, 292))
 
+# HSV to extract edge
 hsv = cv2.cvtColor(I, cv2.COLOR_BGR2HSV)
 
-lower_red = np.array([0,40,50])
-upper_red = np.array([5,255,255])
+lower_red = np.array([0,33,50])
+upper_red = np.array([10,255,255])
 
 mask = cv2.inRange(hsv, lower_red, upper_red)
 res = cv2.bitwise_and(I,I, mask= mask)
 
-cv2.imshow('Original',I)
+#cv2.imshow('Original',I)
 edges = cv2.Canny(mask,100,200)
-cv2.imshow('Edges',edges)
-cv2.imshow('res',res)
-cv2.imshow('mask',mask)
+copy = edges.copy()
+
+# Find contours for detected portion of the image
+im2, cnts, hierarchy = cv2.findContours(copy, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+cnts = sorted(cnts, key = cv2.contourArea, reverse = True)[:25] # get largest 25 contour areas
+rects = []
+for c in cnts:
+    peri = cv2.arcLength(c, True)
+    approx = cv2.approxPolyDP(c, 0.02 * peri, True)
+    x, y, w, h = cv2.boundingRect(approx)
+    if w >= 40 and h >= 10:
+        # if width and height are enough
+        # create rectangle for bounding
+        rect = (x, y, w, h)
+        rects.append(rect)
+        cv2.rectangle(I, (x, y), (x+w, y+h), (255, 0, 0), 1);
+
+#cv2.imshow('Edges',edges)
+#cv2.imshow('res',res)
+#cv2.imshow('mask',mask)
 
 
-#k = cv2.waitKey(5) & 0xFF
-#if k == 27:
-    #break
-
-#cv2.destroyAllWindows()
-#cap.release()
-
-plt.imshow(cv2.cvtColor(I, cv2.COLOR_BGR2HSV))
+plt.imshow(cv2.cvtColor(I, cv2.COLOR_BGR2RGB))
 plt.show()
 
 
