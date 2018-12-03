@@ -1,30 +1,67 @@
 import matplotlib.pyplot as plt
 import numpy as np
+#from scipy import ndimage
 import cv2
 from matplotlib.widgets  import RectangleSelector
 import matplotlib
 
 # Required information for each scanned image
-Distance_control_test = 175
-Distance_control_background = 215
+Distance_control_test = 85
+Distance_control_background = 105
 
+# Upload and resize the scanned image
 I_raw = cv2.imread('images/LFT_example.png')
-I = cv2.resize(I_raw, (700, 700))
+I = cv2.resize(I_raw, (638, 292))
+
+# HSV to extract edge
+hsv = cv2.cvtColor(I, cv2.COLOR_BGR2HSV)
+
+# thresholds to detect test lines as edge extraction by Canny
+lower_red = np.array([0,33,50])
+upper_red = np.array([10,255,255])
+
+mask = cv2.inRange(hsv, lower_red, upper_red)
+res = cv2.bitwise_and(I,I, mask= mask)
+
+# edges by the threshold
+edges = cv2.Canny(mask,100,200)
+copy = edges.copy()
+
+# Find contours for detected portion of the image
+im2, cnts, hierarchy = cv2.findContours(copy, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+cnts = sorted(cnts, key = cv2.contourArea, reverse = True)[:25] # get largest 25 contour areas
+rects = []
+for c in cnts:
+    peri = cv2.arcLength(c, True)
+    approx = cv2.approxPolyDP(c, 0.02 * peri, True)
+    x, y, w, h = cv2.boundingRect(approx)
+    if w >= 40 and h >= 10:
+        # if width and height are enough
+        # create rectangle for bounding
+        rect = (x, y, w, h)
+        rects.append(rect)
+        cv2.rectangle(I, (x, y), (x+w, y+h), (255, 0, 0), 1);
+
+#cv2.imshow('Edges',edges)
+#cv2.imshow('res',res)
+#cv2.imshow('mask',mask)
+
+
+plt.imshow(cv2.cvtColor(I, cv2.COLOR_BGR2RGB))
+plt.show()
+
+
+
+
 
 # Select ROI_control
-fromCenter = False
-ROI_control = cv2.selectROI(I, fromCenter)
+#fromCenter = False
+#ROI_control = cv2.selectROI(I, fromCenter)
 
 # Crop image
-ROI_control_crop = I[int(ROI_control[1]):int(ROI_control[1]+ROI_control[3]), int(ROI_control[0]):int(ROI_control[0]+ROI_control[2])]
-ROI_test_crop = I[int(ROI_control[1])+Distance_control_test:int(ROI_control[1]+ROI_control[3]+Distance_control_test), int(ROI_control[0]):int(ROI_control[0]+ROI_control[2])]
-ROI_background_crop = I[int(ROI_control[1])+Distance_control_background:int(ROI_control[1]+ROI_control[3]+Distance_control_background), int(ROI_control[0]):int(ROI_control[0]+ROI_control[2])]
-
-##ROI_control = I[203:223, 190:270]
-
-##ROI_test = I[378:398, 190:270]
-
-##ROI_background = I[418:438, 190:270]
+#ROI_control_crop = I[int(ROI_control[1]):int(ROI_control[1]+ROI_control[3]), int(ROI_control[0]):int(ROI_control[0]+ROI_control[2])]
+#ROI_test_crop = I[int(ROI_control[1])+Distance_control_test:int(ROI_control[1]+ROI_control[3]+Distance_control_test), int(ROI_control[0]):int(ROI_control[0]+ROI_control[2])]
+#ROI_background_crop = I[int(ROI_control[1])+Distance_control_background:int(ROI_control[1]+ROI_control[3]+Distance_control_background), int(ROI_control[0]):int(ROI_control[0]+ROI_control[2])]
 
 
 #b_ROI_control_crop = ROI_control_crop.copy()
@@ -93,7 +130,7 @@ ROI_background_crop = I[int(ROI_control[1])+Distance_control_background:int(ROI_
 ## output to text file
 #lines = ['roi_corrected_0to1', str(roi_corrected_0to1), 'roi_control_avg_intensity', str(roi_control_avg_intensity), 'roi_test_avg_intensity', str(roi_test_avg_intensity), 'roi_background_avg_intensity', str(roi_background_avg_intensity)]
 #with open('output.txt', 'w') as file:
-#    file.write('\n'.join(lines))
+    #file.write('\n'.join(lines))
 
 #file.close()
 
