@@ -35,12 +35,13 @@ edges = cv2.Canny(mask,100,200)
 copy = edges.copy()
 
 # Find contours for detected portion of the image
-im2, cnts, hierarchy = cv2.findContours(copy, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
-cnts = sorted(cnts, key = cv2.contourArea, reverse = True)[:25] # get largest 25 contour areas
+###im2, cnts, hierarchy = cv2.findContours(copy, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+###cnts = sorted(cnts, key = cv2.contourArea, reverse = True)[:25] # get largest 25 contour areas
 rects = []
+cnts = cv2.findContours(copy, cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
 
 # sort number for each rectangle from left to right
-#cnts = cnts[0] if imutils.is_cv2() else cnts[1]
+cnts = cnts[0] if imutils.is_cv2() else cnts[1]
 cnts = contours.sort_contours(cnts)[0]
 
 for (i, c) in enumerate(cnts):
@@ -56,6 +57,9 @@ for (i, c) in enumerate(cnts):
         # add number for each rectangle
         cv2.putText(I, "#{}".format(i + 1), (x, y - 15),
 		cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 0, 0), 1);
+
+
+
 
 cv2.imshow('Edges',edges)
 #cv2.imshow('res',res)
