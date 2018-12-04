@@ -59,8 +59,6 @@ for (i, c) in enumerate(cnts):
 		cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 0, 0), 1);
 
 
-
-
 cv2.imshow('Edges',edges)
 #cv2.imshow('res',res)
 #cv2.imshow('mask',mask)
