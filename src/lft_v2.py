@@ -11,7 +11,10 @@ Distance_control_background = 105
 
 # Upload and resize the scanned image
 I_raw = cv2.imread('images/LFT_example.png')
-I = cv2.resize(I_raw, (638, 292))
+I_resize = cv2.resize(I_raw, (638, 292))
+
+#blur to extract edge
+I = cv2.blur(I_resize, (5, 10))
 
 # HSV to extract edge
 hsv = cv2.cvtColor(I, cv2.COLOR_BGR2HSV)
@@ -21,7 +24,7 @@ lower_red = np.array([0,33,50])
 upper_red = np.array([10,255,255])
 
 mask = cv2.inRange(hsv, lower_red, upper_red)
-res = cv2.bitwise_and(I,I, mask= mask)
+#res = cv2.bitwise_and(I,I, mask= mask)
 
 # edges by the threshold
 edges = cv2.Canny(mask,100,200)
@@ -31,18 +34,21 @@ copy = edges.copy()
 im2, cnts, hierarchy = cv2.findContours(copy, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
 cnts = sorted(cnts, key = cv2.contourArea, reverse = True)[:25] # get largest 25 contour areas
 rects = []
-for c in cnts:
+for (i, c) in enumerate(cnts):
     peri = cv2.arcLength(c, True)
-    approx = cv2.approxPolyDP(c, 0.02 * peri, True)
+    approx = cv2.approxPolyDP(c, 0.04 * peri, True)
     x, y, w, h = cv2.boundingRect(approx)
-    if w >= 40 and h >= 10:
+    if w >= 42 and h >= 10:
         # if width and height are enough
         # create rectangle for bounding
         rect = (x, y, w, h)
         rects.append(rect)
-        cv2.rectangle(I, (x, y), (x+w, y+h), (255, 0, 0), 1);
+        cv2.rectangle(I, (x, y), (x+w, y+h), (255, 0, 0), 1)
+        # add number for each rectangle
+        cv2.putText(I, "#{}".format(i + 1), (x, y - 15),
+		cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 0, 0), 2);
 
-#cv2.imshow('Edges',edges)
+cv2.imshow('Edges',edges)
 #cv2.imshow('res',res)
 #cv2.imshow('mask',mask)
 
