@@ -5,6 +5,10 @@ import cv2
 from matplotlib.widgets  import RectangleSelector
 import matplotlib
 
+from imutils import contours
+import imutils
+
+
 # Required information for each scanned image
 Distance_control_test = 85
 Distance_control_background = 105
@@ -20,8 +24,8 @@ I = cv2.blur(I_resize, (5, 10))
 hsv = cv2.cvtColor(I, cv2.COLOR_BGR2HSV)
 
 # thresholds to detect test lines as edge extraction by Canny
-lower_red = np.array([0,33,50])
-upper_red = np.array([10,255,255])
+lower_red = np.array([0,27,100])
+upper_red = np.array([5,100,180])
 
 mask = cv2.inRange(hsv, lower_red, upper_red)
 #res = cv2.bitwise_and(I,I, mask= mask)
@@ -34,11 +38,16 @@ copy = edges.copy()
 im2, cnts, hierarchy = cv2.findContours(copy, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
 cnts = sorted(cnts, key = cv2.contourArea, reverse = True)[:25] # get largest 25 contour areas
 rects = []
+
+# sort number for each rectangle from left to right
+#cnts = cnts[0] if imutils.is_cv2() else cnts[1]
+cnts = contours.sort_contours(cnts)[0]
+
 for (i, c) in enumerate(cnts):
     peri = cv2.arcLength(c, True)
     approx = cv2.approxPolyDP(c, 0.04 * peri, True)
     x, y, w, h = cv2.boundingRect(approx)
-    if w >= 42 and h >= 10:
+    if w >= 41 and h >= 7:
         # if width and height are enough
         # create rectangle for bounding
         rect = (x, y, w, h)
@@ -46,7 +55,7 @@ for (i, c) in enumerate(cnts):
         cv2.rectangle(I, (x, y), (x+w, y+h), (255, 0, 0), 1)
         # add number for each rectangle
         cv2.putText(I, "#{}".format(i + 1), (x, y - 15),
-		cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 0, 0), 2);
+		cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 0, 0), 1);
 
 cv2.imshow('Edges',edges)
 #cv2.imshow('res',res)
