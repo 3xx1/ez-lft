@@ -56,10 +56,12 @@ for (i, c) in enumerate(cnts):
         cv2.rectangle(I, (x, y), (x+w, y+h), (255, 0, 0), 1)
         # add number for each rectangle
         cv2.putText(I, "#{}".format(i + 1), (x, y - 15),
-		cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 0, 0), 1);
+		cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 0, 0), 1)
+        ROI_control_crop = I[int(y):int(y+h), int(x):int(x+w)]
 
 
 cv2.imshow('Edges',edges)
+
 #cv2.imshow('res',res)
 #cv2.imshow('mask',mask)
 
