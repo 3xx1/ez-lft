@@ -57,7 +57,9 @@ for (i, c) in enumerate(cnts):
         # add number for each rectangle
         cv2.putText(I, "#{}".format(i + 1), (x, y - 15),
 		cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 0, 0), 1)
-        ROI_control_crop = I[int(y):int(y+h), int(x):int(x+w)]
+
+        #ROI_control_crop = I[int(y):int(y+h), int(x):int(x+w)]
+
 
 
 cv2.imshow('Edges',edges)
