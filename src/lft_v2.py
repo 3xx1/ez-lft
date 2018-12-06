@@ -48,27 +48,36 @@ for (i, c) in enumerate(cnts):
     peri = cv2.arcLength(c, True)
     approx = cv2.approxPolyDP(c, 0.04 * peri, True)
     x, y, w, h = cv2.boundingRect(approx)
+
     if w >= 41 and w <= 60 and h >= 7 and h <= 20:
         # if width and height are enough
         # create rectangle for bounding
         rect = (x, y, w, h)
         rects.append(rect)
-        cv2.rectangle(I, (x, y), (x+w, y+h), (255, 0, 0), 1)
+
+        # compute the center of the rectangles
+        centerCoord = (rect[0]+(rect[2]/2), rect[1]+(rect[3]/2))
+        # write circles from the center of the rectangles
+        #cv2.circle(I, (rect[0]+(rect[2]/2), rect[1]+(rect[3]/2)), 5, (255, 255, 255), 2)
+
+        # write ellipses from the center of the rectangles
+        cv2.ellipse(I, ((rect[0]+(rect[2]/2), rect[1]+(rect[3]/2)), (35, 9), 0), (255, 0, 0), 2)
+
+        # write rectangles for bounding of contours
+        #cv2.rectangle(I, (x, y), (x+w, y+h), (255, 0, 0), 1)
+
         # add number for each rectangle
-        cv2.putText(I, "#{}".format(i + 1), (x, y - 15),
-		cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 0, 0), 1)
+        #cv2.putText(I, "#{}".format(i + 1), (x, y - 15), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 0, 0), 1)
+
 
         #ROI_control_crop = I[int(y):int(y+h), int(x):int(x+w)]
 
-
-
 cv2.imshow('Edges',edges)
-
 #cv2.imshow('res',res)
 #cv2.imshow('mask',mask)
 
 
-plt.imshow(cv2.cvtColor(I, cv2.COLOR_BGR2HSV))
+plt.imshow(cv2.cvtColor(I, cv2.COLOR_BGR2RGB))
 plt.show()
 
 
