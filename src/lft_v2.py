@@ -10,8 +10,8 @@ import imutils
 
 
 # Required information for each scanned image
-Distance_control_test = 85
-Distance_control_background = 105
+Distance_control_test = 90
+Distance_control_background = 115
 
 # Upload and resize the scanned image
 I_raw = cv2.imread('images/LFT_example.png')
@@ -24,8 +24,8 @@ I = cv2.blur(I_resize, (5, 10))
 hsv = cv2.cvtColor(I, cv2.COLOR_BGR2HSV)
 
 # thresholds to detect test lines as edge extraction by Canny
-lower_red = np.array([0,27,100])
-upper_red = np.array([5,100,200])
+lower_red = np.array([0,35,100])
+upper_red = np.array([5,65,200])
 
 mask = cv2.inRange(hsv, lower_red, upper_red)
 #res = cv2.bitwise_and(I,I, mask= mask)
@@ -61,7 +61,17 @@ for (i, c) in enumerate(cnts):
         #cv2.circle(I, (rect[0]+(rect[2]/2), rect[1]+(rect[3]/2)), 5, (255, 255, 255), 2)
 
         # write ellipses from the center of the rectangles
-        cv2.ellipse(I, ((rect[0]+(rect[2]/2), rect[1]+(rect[3]/2)), (35, 9), 0), (255, 0, 0), 2)
+        cv2.ellipse(I, ((rect[0]+(rect[2]/2), rect[1]+(rect[3]/2)), (2, 2), -1), (255, 0, 0), 2)
+
+        # write ROI at test line, based on the center of the control line
+        #ROI_test = cv2.ellipse(I, ((rect[0]+(rect[2]/2), rect[1]+(rect[3]/2) + Distance_control_test), (35, 9), 0), (255, 255, 0), 2)
+        ROI_test_box = cv2.rectangle(I,(int(rect[0]+(rect[2]/2) - 14),int(rect[1]+(rect[3]/2) + Distance_control_test - 2.5)),(int(rect[0]+(rect[2]/2) + 14),int(rect[1]+(rect[3]/2) + Distance_control_test + 2.5)),(255,255,0),1)
+        ROI_test_crop = I[int(rect[1]+(rect[3]/2) + Distance_control_test - 2.5):int(rect[1]+(rect[3]/2) + Distance_control_test + 2.5), int(rect[0]+(rect[2]/2) - 14):int(rect[0]+(rect[2]/2) + 14)]
+
+        # write ROI at background, based on the center of the control line
+        ROI_background_box = cv2.rectangle(I,(int(rect[0]+(rect[2]/2) - 14),int(rect[1]+(rect[3]/2) + Distance_control_background - 2.5)),(int(rect[0]+(rect[2]/2) + 14),int(rect[1]+(rect[3]/2) + Distance_control_background + 2.5)),(0,0,0),1)
+        ROI_background_crop = I[int(rect[1]+(rect[3]/2) + Distance_control_background - 2.5):int(rect[1]+(rect[3]/2) + Distance_control_background + 2.5), int(rect[0]+(rect[2]/2) - 14):int(rect[0]+(rect[2]/2) + 14)]
+
 
         # write rectangles for bounding of contours
         #cv2.rectangle(I, (x, y), (x+w, y+h), (255, 0, 0), 1)
