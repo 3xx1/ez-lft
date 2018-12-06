@@ -25,7 +25,7 @@ hsv = cv2.cvtColor(I, cv2.COLOR_BGR2HSV)
 
 # thresholds to detect test lines as edge extraction by Canny
 lower_red = np.array([0,27,100])
-upper_red = np.array([5,100,180])
+upper_red = np.array([5,100,200])
 
 mask = cv2.inRange(hsv, lower_red, upper_red)
 #res = cv2.bitwise_and(I,I, mask= mask)
@@ -48,7 +48,7 @@ for (i, c) in enumerate(cnts):
     peri = cv2.arcLength(c, True)
     approx = cv2.approxPolyDP(c, 0.04 * peri, True)
     x, y, w, h = cv2.boundingRect(approx)
-    if w >= 41 and h >= 7:
+    if w >= 41 and w <= 60 and h >= 7 and h <= 20:
         # if width and height are enough
         # create rectangle for bounding
         rect = (x, y, w, h)
@@ -68,7 +68,7 @@ cv2.imshow('Edges',edges)
 #cv2.imshow('mask',mask)
 
 
-plt.imshow(cv2.cvtColor(I, cv2.COLOR_BGR2RGB))
+plt.imshow(cv2.cvtColor(I, cv2.COLOR_BGR2HSV))
 plt.show()
 
 
