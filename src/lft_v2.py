@@ -65,11 +65,11 @@ for (i, c) in enumerate(cnts):
 
         # write ROI at test line, based on the center of the control line
         #ROI_test = cv2.ellipse(I, ((rect[0]+(rect[2]/2), rect[1]+(rect[3]/2) + Distance_control_test), (35, 9), 0), (255, 255, 0), 2)
-        ROI_test_box = cv2.rectangle(I,(int(rect[0]+(rect[2]/2) - 14),int(rect[1]+(rect[3]/2) + Distance_control_test - 2.5)),(int(rect[0]+(rect[2]/2) + 14),int(rect[1]+(rect[3]/2) + Distance_control_test + 2.5)),(255,255,0),1)
+        #ROI_test_box = cv2.rectangle(I,(int(rect[0]+(rect[2]/2) - 14),int(rect[1]+(rect[3]/2) + Distance_control_test - 2.5)),(int(rect[0]+(rect[2]/2) + 14),int(rect[1]+(rect[3]/2) + Distance_control_test + 2.5)),(255,255,0),1)
         ROI_test_crop = I[int(rect[1]+(rect[3]/2) + Distance_control_test - 2.5):int(rect[1]+(rect[3]/2) + Distance_control_test + 2.5), int(rect[0]+(rect[2]/2) - 14):int(rect[0]+(rect[2]/2) + 14)]
 
         # write ROI at background, based on the center of the control line
-        ROI_background_box = cv2.rectangle(I,(int(rect[0]+(rect[2]/2) - 14),int(rect[1]+(rect[3]/2) + Distance_control_background - 2.5)),(int(rect[0]+(rect[2]/2) + 14),int(rect[1]+(rect[3]/2) + Distance_control_background + 2.5)),(0,0,0),1)
+        #ROI_background_box = cv2.rectangle(I,(int(rect[0]+(rect[2]/2) - 14),int(rect[1]+(rect[3]/2) + Distance_control_background - 2.5)),(int(rect[0]+(rect[2]/2) + 14),int(rect[1]+(rect[3]/2) + Distance_control_background + 2.5)),(0,0,0),1)
         ROI_background_crop = I[int(rect[1]+(rect[3]/2) + Distance_control_background - 2.5):int(rect[1]+(rect[3]/2) + Distance_control_background + 2.5), int(rect[0]+(rect[2]/2) - 14):int(rect[0]+(rect[2]/2) + 14)]
 
 
@@ -79,8 +79,65 @@ for (i, c) in enumerate(cnts):
         # add number for each rectangle
         #cv2.putText(I, "#{}".format(i + 1), (x, y - 15), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 0, 0), 1)
 
+        b_ROI_test_crop = ROI_test_crop.copy()
+        # set green and red channels to 0
+        b_ROI_test_crop[:, :, 1] = 0
+        b_ROI_test_crop[:, :, 2] = 0
 
-        #ROI_control_crop = I[int(y):int(y+h), int(x):int(x+w)]
+        g_ROI_test_crop = ROI_test_crop.copy()
+        # set blue and red channels to 0
+        g_ROI_test_crop[:, :, 0] = 0
+        g_ROI_test_crop[:, :, 2] = 0
+
+        r_ROI_test_crop = ROI_test_crop.copy()
+        # set blue and green channels to 0
+        r_ROI_test_crop[:, :, 0] = 0
+        r_ROI_test_crop[:, :, 1] = 0
+
+
+        b_ROI_background_crop = ROI_background_crop.copy()
+        # set green and red channels to 0
+        b_ROI_background_crop[:, :, 1] = 0
+        b_ROI_background_crop[:, :, 2] = 0
+
+        g_ROI_background_crop = ROI_background_crop.copy()
+        # set blue and red channels to 0
+        g_ROI_background_crop[:, :, 0] = 0
+        g_ROI_background_crop[:, :, 2] = 0
+
+        r_ROI_background_crop = ROI_background_crop.copy()
+        # set blue and green channels to 0
+        r_ROI_background_crop[:, :, 0] = 0
+        r_ROI_background_crop[:, :, 1] = 0
+
+
+        #calculate signal intensities
+        #roi_control_avg_intensity = np.mean(g_ROI_control_crop)
+        roi_test_avg_intensity = np.mean(g_ROI_test_crop)
+        roi_background_avg_intensity = np.mean(g_ROI_background_crop)
+        roi_corrected_0to1 = (roi_test_avg_intensity - roi_background_avg_intensity)/(0 - roi_background_avg_intensity)
+
+        print roi_corrected_0to1
+        #print roi_control_avg_intensity
+        print roi_test_avg_intensity
+        print roi_background_avg_intensity
+
+        # write ROI at test line and background, based on the center of the control line
+        ROI_test_box = cv2.rectangle(I,(int(rect[0]+(rect[2]/2) - 14),int(rect[1]+(rect[3]/2) + Distance_control_test - 2.5)),(int(rect[0]+(rect[2]/2) + 14),int(rect[1]+(rect[3]/2) + Distance_control_test + 2.5)),(255,255,0),1)
+        ROI_background_box = cv2.rectangle(I,(int(rect[0]+(rect[2]/2) - 14),int(rect[1]+(rect[3]/2) + Distance_control_background - 2.5)),(int(rect[0]+(rect[2]/2) + 14),int(rect[1]+(rect[3]/2) + Distance_control_background + 2.5)),(0,0,0),1)
+
+        # add number for each rectangle
+        cv2.putText(I, "#{}".format(i + 1), (x, y - 15), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 0, 0), 1)
+
+
+
+# output to text file
+lines = ['roi_corrected_0to1', str(roi_corrected_0to1), 'roi_test_avg_intensity', str(roi_test_avg_intensity), 'roi_background_avg_intensity', str(roi_background_avg_intensity)]
+with open('output.txt', 'w') as file:
+    file.write('\n'.join(lines))
+
+file.close()
+
 
 cv2.imshow('Edges',edges)
 #cv2.imshow('res',res)
