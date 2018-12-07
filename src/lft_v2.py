@@ -13,6 +13,9 @@ import imutils
 Distance_control_test = 90
 Distance_control_background = 115
 
+ROI_test_box_width = 28
+ROI_test_box_hight = 5
+
 # Upload and resize the scanned image
 I_raw = cv2.imread('images/LFT_example.png')
 I_resize = cv2.resize(I_raw, (638, 292))
@@ -66,11 +69,11 @@ for (i, c) in enumerate(cnts):
         # write ROI at test line, based on the center of the control line
         #ROI_test = cv2.ellipse(I, ((rect[0]+(rect[2]/2), rect[1]+(rect[3]/2) + Distance_control_test), (35, 9), 0), (255, 255, 0), 2)
         #ROI_test_box = cv2.rectangle(I,(int(rect[0]+(rect[2]/2) - 14),int(rect[1]+(rect[3]/2) + Distance_control_test - 2.5)),(int(rect[0]+(rect[2]/2) + 14),int(rect[1]+(rect[3]/2) + Distance_control_test + 2.5)),(255,255,0),1)
-        ROI_test_crop = I[int(rect[1]+(rect[3]/2) + Distance_control_test - 2.5):int(rect[1]+(rect[3]/2) + Distance_control_test + 2.5), int(rect[0]+(rect[2]/2) - 14):int(rect[0]+(rect[2]/2) + 14)]
+        ROI_test_crop = I[int(rect[1]+(rect[3]/2) + Distance_control_test - (ROI_test_box_hight/2)):int(rect[1]+(rect[3]/2) + Distance_control_test + (ROI_test_box_hight/2)), int(rect[0]+(rect[2]/2) - (ROI_test_box_width/2)):int(rect[0]+(rect[2]/2) + (ROI_test_box_width/2))]
 
         # write ROI at background, based on the center of the control line
         #ROI_background_box = cv2.rectangle(I,(int(rect[0]+(rect[2]/2) - 14),int(rect[1]+(rect[3]/2) + Distance_control_background - 2.5)),(int(rect[0]+(rect[2]/2) + 14),int(rect[1]+(rect[3]/2) + Distance_control_background + 2.5)),(0,0,0),1)
-        ROI_background_crop = I[int(rect[1]+(rect[3]/2) + Distance_control_background - 2.5):int(rect[1]+(rect[3]/2) + Distance_control_background + 2.5), int(rect[0]+(rect[2]/2) - 14):int(rect[0]+(rect[2]/2) + 14)]
+        ROI_background_crop = I[int(rect[1]+(rect[3]/2) + Distance_control_background - (ROI_test_box_hight/2)):int(rect[1]+(rect[3]/2) + Distance_control_background + (ROI_test_box_hight/2)), int(rect[0]+(rect[2]/2) - (ROI_test_box_width/2)):int(rect[0]+(rect[2]/2) + (ROI_test_box_width/2))]
 
 
         # write rectangles for bounding of contours
@@ -123,8 +126,8 @@ for (i, c) in enumerate(cnts):
         print roi_background_avg_intensity
 
         # write ROI at test line and background, based on the center of the control line
-        ROI_test_box = cv2.rectangle(I,(int(rect[0]+(rect[2]/2) - 14),int(rect[1]+(rect[3]/2) + Distance_control_test - 2.5)),(int(rect[0]+(rect[2]/2) + 14),int(rect[1]+(rect[3]/2) + Distance_control_test + 2.5)),(255,255,0),1)
-        ROI_background_box = cv2.rectangle(I,(int(rect[0]+(rect[2]/2) - 14),int(rect[1]+(rect[3]/2) + Distance_control_background - 2.5)),(int(rect[0]+(rect[2]/2) + 14),int(rect[1]+(rect[3]/2) + Distance_control_background + 2.5)),(0,0,0),1)
+        ROI_test_box = cv2.rectangle(I,(int(rect[0]+(rect[2]/2) - (ROI_test_box_width/2)),int(rect[1]+(rect[3]/2) + Distance_control_test - 2.5)),(int(rect[0]+(rect[2]/2) + (ROI_test_box_width/2)),int(rect[1]+(rect[3]/2) + Distance_control_test + 2.5)),(255,255,0),1)
+        ROI_background_box = cv2.rectangle(I,(int(rect[0]+(rect[2]/2) - (ROI_test_box_width/2)),int(rect[1]+(rect[3]/2) + Distance_control_background - 2.5)),(int(rect[0]+(rect[2]/2) + (ROI_test_box_width/2)),int(rect[1]+(rect[3]/2) + Distance_control_background + 2.5)),(0,0,0),1)
 
         # add number for each rectangle
         cv2.putText(I, "#{}".format(i + 1), (x, y - 15), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 0, 0), 1)
