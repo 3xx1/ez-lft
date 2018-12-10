@@ -130,7 +130,7 @@ for (i, c) in enumerate(cnts):
         ROI_background_box = cv2.rectangle(I,(int(rect[0]+(rect[2]/2) - (ROI_test_box_width/2)),int(rect[1]+(rect[3]/2) + Distance_control_background - 2.5)),(int(rect[0]+(rect[2]/2) + (ROI_test_box_width/2)),int(rect[1]+(rect[3]/2) + Distance_control_background + 2.5)),(0,0,0),1)
 
         # add number for each rectangle
-        cv2.putText(I, "#{}".format(i + 1), (x, y - 15), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 0, 0), 1)
+        #cv2.putText(I, "#{}".format(i + 1), (x, y - 15), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 0, 0), 1)
 
 
 
