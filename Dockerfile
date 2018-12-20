@@ -1,5 +1,7 @@
 # Use an official Python runtime as a parent image
 FROM python:2.7-slim
+FROM node:10.13.0
+
 RUN apt-get update -y
 
 # Linux Dependencies
@@ -35,8 +37,16 @@ COPY . /ez-lft
 # Install Opencv Python Package
 RUN apt-get install python-opencv -y
 
-# Make port 80 available to the world outside this container
+# Node App Initial Process
+# Install Dependencies
+RUN npm install
+
+# Run the app
+RUN npm run build
+
+# Make port 80 and 3000 available to the world outside this container
 EXPOSE 80
+EXPOSE 3000
 
 # Run app.py when the container launches
-CMD ["python"]
+# CMD ["python"]
