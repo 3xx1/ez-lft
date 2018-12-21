@@ -1,7 +1,7 @@
 # Use an official Python runtime as a parent image
 FROM python:2.7-slim
-FROM node:10.13.0
 
+# Update Linux Dependencies
 RUN apt-get update -y
 
 # Linux Dependencies

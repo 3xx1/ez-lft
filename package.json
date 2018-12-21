@@ -4,7 +4,8 @@
   "description": "You will need to have [Docker](https://www.docker.com/) installed in your local environment.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "gulp dev"
   },
   "repository": {
     "type": "git",
