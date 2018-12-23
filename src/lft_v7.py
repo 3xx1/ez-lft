@@ -33,13 +33,13 @@ Distance_control_background = 60
 Distance_control_background2 = 120
 
 ROI_test_box_width = 36
-ROI_test_box_hight = 40
+ROI_test_box_height = 40
 
 ROI_background_box_width = 36
-ROI_background_box_hight = 20
+ROI_background_box_height = 20
 
 ROI_background2_box_width = 36
-ROI_background2_box_hight = 20
+ROI_background2_box_height = 20
 
 
 # Upload and resize the scanned image
@@ -95,11 +95,11 @@ for (i, c) in enumerate(cnts):
         # write ROI at test line, based on the center of the control line
         #ROI_test = cv2.ellipse(I, ((rect[0]+(rect[2]/2), rect[1]+(rect[3]/2) + Distance_control_test), (35, 9), 0), (255, 255, 0), 2)
         #ROI_test_box = cv2.rectangle(I,(int(rect[0]+(rect[2]/2) - 14),int(rect[1]+(rect[3]/2) + Distance_control_test - 2.5)),(int(rect[0]+(rect[2]/2) + 14),int(rect[1]+(rect[3]/2) + Distance_control_test + 2.5)),(255,255,0),1)
-        #ROI_test_crop = I[int(rect[1]+(rect[3]/2) + Distance_control_test - (ROI_test_box_hight/2)):int(rect[1]+(rect[3]/2) + Distance_control_test + (ROI_test_box_hight/2)), int(rect[0]+(rect[2]/2) - (ROI_test_box_width/2)):int(rect[0]+(rect[2]/2) + (ROI_test_box_width/2))]
+        #ROI_test_crop = I[int(rect[1]+(rect[3]/2) + Distance_control_test - (ROI_test_box_height/2)):int(rect[1]+(rect[3]/2) + Distance_control_test + (ROI_test_box_height/2)), int(rect[0]+(rect[2]/2) - (ROI_test_box_width/2)):int(rect[0]+(rect[2]/2) + (ROI_test_box_width/2))]
 
         # write ROI at background, based on the center of the control line
         #ROI_background_box = cv2.rectangle(I,(int(rect[0]+(rect[2]/2) - 14),int(rect[1]+(rect[3]/2) + Distance_control_background - 2.5)),(int(rect[0]+(rect[2]/2) + 14),int(rect[1]+(rect[3]/2) + Distance_control_background + 2.5)),(0,0,0),1)
-        #ROI_background_crop = I[int(rect[1]+(rect[3]/2) + Distance_control_background - (ROI_test_box_hight/2)):int(rect[1]+(rect[3]/2) + Distance_control_background + (ROI_test_box_hight/2)), int(rect[0]+(rect[2]/2) - (ROI_test_box_width/2)):int(rect[0]+(rect[2]/2) + (ROI_test_box_width/2))]
+        #ROI_background_crop = I[int(rect[1]+(rect[3]/2) + Distance_control_background - (ROI_test_box_height/2)):int(rect[1]+(rect[3]/2) + Distance_control_background + (ROI_test_box_height/2)), int(rect[0]+(rect[2]/2) - (ROI_test_box_width/2)):int(rect[0]+(rect[2]/2) + (ROI_test_box_width/2))]
 
 
         # write rectangles for bounding of contours
@@ -147,16 +147,16 @@ for (i, c) in enumerate(cnts):
         #roi_corrected_0to1 = (roi_test_avg_intensity - roi_background_avg_intensity)/(0 - roi_background_avg_intensity)
 
         #Box at test line
-        x1, y1 = int(rect[0]+(rect[2]/2) - (ROI_test_box_width/2)), int(rect[1]+(rect[3]/2) + Distance_control_test - (ROI_test_box_hight/2))
-        x2, y2 = int(rect[0]+(rect[2]/2) + (ROI_test_box_width/2)), int(rect[1]+(rect[3]/2) + Distance_control_test + (ROI_test_box_hight/2))
+        x1, y1 = int(rect[0]+(rect[2]/2) - (ROI_test_box_width/2)), int(rect[1]+(rect[3]/2) + Distance_control_test - (ROI_test_box_height/2))
+        x2, y2 = int(rect[0]+(rect[2]/2) + (ROI_test_box_width/2)), int(rect[1]+(rect[3]/2) + Distance_control_test + (ROI_test_box_height/2))
 
         #Box at background
-        x3, y3 = int(rect[0]+(rect[2]/2) - (ROI_background_box_width/2)), int(rect[1]+(rect[3]/2) + Distance_control_background - (ROI_background_box_hight/2))
-        x4, y4 = int(rect[0]+(rect[2]/2) + (ROI_background_box_width/2)), int(rect[1]+(rect[3]/2) + Distance_control_background + (ROI_background_box_hight/2))
+        x3, y3 = int(rect[0]+(rect[2]/2) - (ROI_background_box_width/2)), int(rect[1]+(rect[3]/2) + Distance_control_background - (ROI_background_box_height/2))
+        x4, y4 = int(rect[0]+(rect[2]/2) + (ROI_background_box_width/2)), int(rect[1]+(rect[3]/2) + Distance_control_background + (ROI_background_box_height/2))
 
         #Box at background
-        x5, y5 = int(rect[0]+(rect[2]/2) - (ROI_background2_box_width/2)), int(rect[1]+(rect[3]/2) + Distance_control_background2 - (ROI_background2_box_hight/2))
-        x6, y6 = int(rect[0]+(rect[2]/2) + (ROI_background2_box_width/2)), int(rect[1]+(rect[3]/2) + Distance_control_background2 + (ROI_background2_box_hight/2))
+        x5, y5 = int(rect[0]+(rect[2]/2) - (ROI_background2_box_width/2)), int(rect[1]+(rect[3]/2) + Distance_control_background2 - (ROI_background2_box_height/2))
+        x6, y6 = int(rect[0]+(rect[2]/2) + (ROI_background2_box_width/2)), int(rect[1]+(rect[3]/2) + Distance_control_background2 + (ROI_background2_box_height/2))
 
         green = I[:,:,1]
 
@@ -243,9 +243,9 @@ for (i, c) in enumerate(cnts):
         #print roi_background_avg_intensity
 
         # write ROI at test line and background, based on the center of the control line
-        ROI_test_box = cv2.rectangle(I,(int(rect[0]+(rect[2]/2) - (ROI_test_box_width/2)),int(rect[1]+(rect[3]/2) + Distance_control_test - (ROI_test_box_hight/2))),(int(rect[0]+(rect[2]/2) + (ROI_test_box_width/2)),int(rect[1]+(rect[3]/2) + Distance_control_test + (ROI_test_box_hight/2))),(255,255,51),2)
-        ROI_background_box = cv2.rectangle(I,(int(rect[0]+(rect[2]/2) - (ROI_background_box_width/2)),int(rect[1]+(rect[3]/2) + Distance_control_background - (ROI_background_box_hight/2))),(int(rect[0]+(rect[2]/2) + (ROI_background_box_width/2)),int(rect[1]+(rect[3]/2) + Distance_control_background + (ROI_background_box_hight/2))),(0,0,0),1)
-        ROI_background2_box = cv2.rectangle(I,(int(rect[0]+(rect[2]/2) - (ROI_background2_box_width/2)),int(rect[1]+(rect[3]/2) + Distance_control_background2 - (ROI_background2_box_hight/2))),(int(rect[0]+(rect[2]/2) + (ROI_background2_box_width/2)),int(rect[1]+(rect[3]/2) + Distance_control_background2 + (ROI_background_box_hight/2))),(0,0,0),1)
+        ROI_test_box = cv2.rectangle(I,(int(rect[0]+(rect[2]/2) - (ROI_test_box_width/2)),int(rect[1]+(rect[3]/2) + Distance_control_test - (ROI_test_box_height/2))),(int(rect[0]+(rect[2]/2) + (ROI_test_box_width/2)),int(rect[1]+(rect[3]/2) + Distance_control_test + (ROI_test_box_height/2))),(255,255,51),2)
+        ROI_background_box = cv2.rectangle(I,(int(rect[0]+(rect[2]/2) - (ROI_background_box_width/2)),int(rect[1]+(rect[3]/2) + Distance_control_background - (ROI_background_box_height/2))),(int(rect[0]+(rect[2]/2) + (ROI_background_box_width/2)),int(rect[1]+(rect[3]/2) + Distance_control_background + (ROI_background_box_height/2))),(0,0,0),1)
+        ROI_background2_box = cv2.rectangle(I,(int(rect[0]+(rect[2]/2) - (ROI_background2_box_width/2)),int(rect[1]+(rect[3]/2) + Distance_control_background2 - (ROI_background2_box_height/2))),(int(rect[0]+(rect[2]/2) + (ROI_background2_box_width/2)),int(rect[1]+(rect[3]/2) + Distance_control_background2 + (ROI_background_box_height/2))),(0,0,0),1)
 
 
 
