@@ -1,8 +1,11 @@
+var gulp = require('gulp');
+
 // dependencies
 var del = require('del');
 var express = require('express');
+var app = express();
 
-// gulp dependencies
+// // gulp dependencies
 var gulp = require('gulp');
 var autoprefixer = require('gulp-autoprefixer');
 var concat = require('gulp-concat');
@@ -11,7 +14,7 @@ var gutil = require('gulp-util');
 var sass = require('gulp-sass');
 var plumber = require('gulp-plumber');
 var watch = require('gulp-watch');
-
+//
 // asset copy location maps
 var copyLocations = [
   {
@@ -69,54 +72,71 @@ gulp.task('copy', function(cb) {
 });
 
 /* SASS */
-gulp.task('sass', function() {
+gulp.task('sass', function(cb) {
   gulp.src(watchLocations.sass)
       .pipe(plumber())
       .pipe(sass())
       .pipe(autoprefixer())
       .pipe(gulp.dest(destLocations.css))
       .pipe(connect.reload());
+  cb();
 });
 
-gulp.task('sass:watch', function() {
+gulp.task('sass:watch', function(cb) {
   watch(watchLocations.sass, function() {
-    gulp.start('sass');
+    gulp.src(watchLocations.sass)
+        .pipe(plumber())
+        .pipe(sass())
+        .pipe(autoprefixer())
+        .pipe(gulp.dest(destLocations.css))
+        .pipe(connect.reload());
   });
+  cb();
 });
 
 /* JS */
-gulp.task('scripts', function() {
+gulp.task('scripts', function(cb) {
   gulp.src(watchLocations.js)
       .pipe(concat('stack.js'))
       .pipe(gulp.dest(destLocations.js))
       .pipe(connect.reload());
+  cb();
 });
 
-gulp.task('scripts:watch', function() {
+gulp.task('scripts:watch', function(cb) {
   watch(watchLocations.js, function() {
-    gulp.start('scripts');
+    gulp.src(watchLocations.js)
+        .pipe(concat('stack.js'))
+        .pipe(gulp.dest(destLocations.js))
+        .pipe(connect.reload());
   });
+  cb();
 });
 
 /* SERVER */
-gulp.task('server', function() {
-  connect.server({
-    root: './public',
-    port: 3000,
-    livereload: true
-  });
+gulp.task('server', function(cb) {
+  // Ideally it would work with gulp-connect module - to be figured out.
+  // connect.server({
+  //   root: './public',
+  //   port: 3000,
+  //   livereload: true
+  // });
+
+  // TODO - add live reload
+  app.use(express.static('./public'));
+  app.listen(3000);
 });
 
 /* MAIN TASKS */
-gulp.task('dev', function() {
-  gulp.start('clean');
-  gulp.start('copy');
-  gulp.start('sass');
-  gulp.start('sass:watch');
-  gulp.start('scripts');
-  gulp.start('scripts:watch');
-  gulp.start('server');
-});
+gulp.task('dev', gulp.series(
+  'clean',
+  'copy',
+  'sass',
+  'sass:watch',
+  'scripts',
+  'scripts:watch',
+  'server'
+));
 
 gulp.task('build', function() {
   // TODO: build task

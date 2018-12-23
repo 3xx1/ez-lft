@@ -17,7 +17,6 @@ RUN apt-get install -yq make cmake gcc g++ unzip wget build-essential gcc zlib1g
 RUN curl --silent --location https://deb.nodesource.com/setup_10.x | sudo bash -
 RUN apt-get install -y nodejs
 
-
 ##########
 # Python #
 ##########
@@ -57,6 +56,11 @@ WORKDIR /ez-lft
 
 # Copy the current directory contents into the container at /ez-lft
 COPY . /ez-lft
+
+# Gulp related logistics
+RUN npm install gulp-cli -g
+RUN npm install
+RUN npx -p touch nodetouch gulpfile.js
 
 # Make port 80 and 3000 available to the world outside this container
 EXPOSE 80
