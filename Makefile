@@ -1,7 +1,7 @@
 # Include environment params reference
 include make.env
 
-.PHONY: build bash dev shell start restart stop rm
+.PHONY: build bash dev shell start start-ui restart stop rm
 
 build:
 	docker build --no-cache=true -t $(DOCKER_NAMESPACE)/$(DOCKER_REPOSITORY):$(DOCKER_IMAGE_VERSION) .
@@ -17,6 +17,9 @@ shell:
 
 start:
 	docker run -d --name $(DOCKER_CONTAINER_NAME) $(DOCKER_PORTS) $(DOCKER_ENV) $(DOCKER_NAMESPACE)/$(DOCKER_REPOSITORY):$(DOCKER_IMAGE_VERSION)
+
+start-ui:
+	./enable-gui.sh && docker run --rm --name $(DOCKER_CONTAINER_NAME) -i -t $(DOCKER_PORTS) -v "$(shell pwd)$(DOCKER_MAPPED_VOLUMES)" -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=$(IP):0 $(DOCKER_ENV) $(DOCKER_NAMESPACE)/$(DOCKER_REPOSITORY):$(DOCKER_IMAGE_VERSION) /bin/bash -c "npm install && npm run dev"
 
 restart:
 	docker start $(DOCKER_CONTAINER_NAME)
