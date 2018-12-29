@@ -3,6 +3,7 @@ import matplotlib.image as mpimg
 from matplotlib.figure import Figure
 import matplotlib.colors as colors
 from matplotlib.cm import ScalarMappable
+
 #from mpl_toolkits.basemap import Basemap
 import pandas as pd
 import matplotlib as mpl
@@ -10,7 +11,6 @@ import matplotlib as mpl
 from numpy import exp, loadtxt, pi, sqrt
 
 from lmfit import Model
-
 from lmfit.models import PowerLawModel, ExponentialModel, GaussianModel
 
 import numpy as np
@@ -90,8 +90,12 @@ for (i, c) in enumerate(cnts):
         #cv2.circle(I, (rect[0]+(rect[2]/2), rect[1]+(rect[3]/2)), 5, (255, 255, 255), 2)
 
         # write ellipses from the center of the rectangles
-        cv2.ellipse(I, ((rect[0]+(rect[2]/2), rect[1]+(rect[3]/2)), (5, 5), -1), (255, 0, 0), 3)
-
+        ellipse_control = cv2.ellipse(I, ((rect[0]+(rect[2]/2), rect[1]+(rect[3]/2)), (5, 5), -1), (255, 0, 0), 3)
+        #list = zip(ellipse_control)
+        #for i in enumerate(list):
+            #cv2.putText(I, "#{}".format(i + 1), (rect[0]+(rect[2]/2), rect[1]+(rect[3]/2) - 15), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 0, 0), 1)
+
+
         # write ROI at test line, based on the center of the control line
         #ROI_test = cv2.ellipse(I, ((rect[0]+(rect[2]/2), rect[1]+(rect[3]/2) + Distance_control_test), (35, 9), 0), (255, 255, 0), 2)
         #ROI_test_box = cv2.rectangle(I,(int(rect[0]+(rect[2]/2) - 14),int(rect[1]+(rect[3]/2) + Distance_control_test - 2.5)),(int(rect[0]+(rect[2]/2) + 14),int(rect[1]+(rect[3]/2) + Distance_control_test + 2.5)),(255,255,0),1)
@@ -176,9 +180,24 @@ for (i, c) in enumerate(cnts):
         #plt.plot([1-x for x in myAvg] - (np.mean([1-x for x in myAvg2]) + np.mean([1-x for x in myAvg3]))/2)
 
         #plot signal at test line more than 3STD of background
-        plt.plot([1-x for x in myAvg] - (np.mean([1-x for x in myAvg2]) + np.mean([1-x for x in myAvg3]))/2 - (np.std([1-x for x in myAvg2]) + np.std([1-x for x in myAvg3]))/2*3)
+        plt.subplot(221)
+        plt.plot([1-x for x in myAvg] - (np.mean([1-x for x in myAvg2]) + np.mean([1-x for x in myAvg3]))/2 - (np.std([1-x for x in myAvg2]) + np.std([1-x for x in myAvg3]))/2*3, label = i+1)
+        plt.legend()
+        plt.title("Profile at test line")
+        plt.xlabel("Pixels")
+        plt.ylabel("Pixel intensity")
 
-        print np.trapz([1-x for x in myAvg] - (np.mean([1-x for x in myAvg2]) + np.mean([1-x for x in myAvg3]))/2 - (np.std([1-x for x in myAvg2]) + np.std([1-x for x in myAvg3]))/2*3)
+        #integrate and plot results
+        results = np.trapz([1-x for x in myAvg] - (np.mean([1-x for x in myAvg2]) + np.mean([1-x for x in myAvg3]))/2 - (np.std([1-x for x in myAvg2]) + np.std([1-x for x in myAvg3]))/2*3)
+        print results
+        plt.subplot(222)
+        plt.scatter([i + 1], results)
+        plt.title("Integrated signal intensity")
+        plt.xlabel("Sample#")
+        plt.ylabel("Integrated signal intensity")
+
+
+
 
         #plt.plot([1-x for x in myAvg2])
 
@@ -250,14 +269,21 @@ for (i, c) in enumerate(cnts):
 
 
         # add number for each rectangle
-        #cv2.putText(I, "#{}".format(i + 1), (x, y - 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2)
-
+        cv2.putText(I, "#{}".format(i + 1), (rect[0]+(rect[2]/2) - 20, rect[1]+(rect[3]/2) - 15), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2)
+
         # output to text file
         #lines = ['roi_corrected_0to1', str(roi_corrected_0to1), 'roi_test_avg_intensity', str(roi_test_avg_intensity), 'roi_background_avg_intensity', str(roi_background_avg_intensity)]
         #with open('output.txt', 'w') as file:
         #    file.write('\n'.join(lines))
 
         #file.close()
+
+        plt.subplot(224)
+        plt.imshow(cv2.cvtColor(I, cv2.COLOR_BGR2RGB))
+        plt.title("ROI on image")
+        plt.xlabel("Pixels")
+        plt.ylabel("Pixels")
+
 
 
 #cv2.imshow('Edges',edges)
@@ -265,12 +291,13 @@ for (i, c) in enumerate(cnts):
 #cv2.imshow('mask',mask)
 
 #fig = plt.figure()
+
 #plt.subplot()
 
-
-fig = plt.figure()
-
-plt.imshow(cv2.cvtColor(I, cv2.COLOR_BGR2RGB))
+#fig = plt.figure()
+
+#plt.subplot(133)
+#plt.imshow(cv2.cvtColor(I, cv2.COLOR_BGR2RGB))
 
 plt.show()
 
