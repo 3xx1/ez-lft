@@ -29,17 +29,17 @@ import imutils
 
 # Required information for each scanned image
 Distance_control_test = 90
-Distance_control_background = 60
-Distance_control_background2 = 120
+Distance_control_background = 54
+Distance_control_background2 = 126
 
-ROI_test_box_width = 36
-ROI_test_box_height = 40
+ROI_test_box_width = 26
+ROI_test_box_height = 48
 
-ROI_background_box_width = 36
-ROI_background_box_height = 20
+ROI_background_box_width = 26
+ROI_background_box_height = 24
 
-ROI_background2_box_width = 36
-ROI_background2_box_height = 20
+ROI_background2_box_width = 26
+ROI_background2_box_height = 24
 
 
 # Upload and resize the scanned image
@@ -277,6 +277,12 @@ for (i, c) in enumerate(cnts):
         #    file.write('\n'.join(lines))
 
         #file.close()
+
+        plt.subplot(223)
+        plt.imshow(cv2.cvtColor(I_resize, cv2.COLOR_BGR2RGB))
+        plt.title("Raw image")
+        plt.xlabel("Pixels")
+        plt.ylabel("Pixels")
 
         plt.subplot(224)
         plt.imshow(cv2.cvtColor(I, cv2.COLOR_BGR2RGB))
