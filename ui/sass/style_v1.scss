@@ -1,104 +1,136 @@
-body {
-  margin: 0;
-}
-
-.row::after {
-content: "";
-clear: both;
-display: table;
-}
-
-[class*="col-"] {
-float: left;
-padding: 15px;
-}
-
-.header {
-background-color: #8db2b3;
-color: #ffffff;
-padding: 4px;
-}
-
-.menu ul {
-list-style-type: none;
-margin: 0;
-padding: 0;
-}
-
-.menu li {
-padding: 30px;
-margin-bottom: 7px;
-background-color: #5b8591;
-color: #ffffff;
-box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-}
-
-.menu li:hover {
-background-color: #0099cc;
-}
-
-.menu-bar .menu-bar-item {
-padding:8px 16px;
-float:left;
-width: 15.7%;
-margin-right: 7px;
-text-align: center;
-background-color: #5b8591;
-color: #ffffff;
-box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-}
-
-
-.aside {
-background-color: #ffffff;
-padding: 100px;
-color: #8db2b3;
-text-align: center;
-font-size: 15px;
-box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-}
-
-.footer {
-background-color: #8db2b3;
-color: #ffffff;
-text-align: center;
-font-size: 12px;
-padding: 4px;
-}
-
-/* For mobile phones: */
-[class*="col-"] {
-  width: 100%;
-}
-
-@media only screen and (min-width: 600px) {
-  /* For tablets: */
-  .col-s-1 {width: 8.33%;}
-  .col-s-2 {width: 16.66%;}
-  .col-s-3 {width: 25%;}
-  .col-s-4 {width: 33.33%;}
-  .col-s-5 {width: 41.66%;}
-  .col-s-6 {width: 50%;}
-  .col-s-7 {width: 58.33%;}
-  .col-s-8 {width: 66.66%;}
-  .col-s-9 {width: 75%;}
-  .col-s-10 {width: 83.33%;}
-  .col-s-11 {width: 91.66%;}
-  .col-s-12 {width: 100%;}
-}
-
-@media only screen and (min-width: 768px) {
-/* For desktop: */
-.col-1 {width: 8.33%;}
-.col-2 {width: 16.66%;}
-.col-3 {width: 25%;}
-.col-4 {width: 33.33%;}
-.col-5 {width: 41.66%;}
-.col-6 {width: 50%;}
-.col-7 {width: 58.33%;}
-.col-8 {width: 66.66%;}
-.col-9 {width: 75%;}
-.col-10 {width: 83.33%;}
-.col-11 {width: 91.66%;}
-.col-12 {width: 100%;}
+{
+  "body": {
+    "margin": "0"
+  },
+  "row__after": {
+    "content": "\"\"",
+    "clear": "both",
+    "display": "table"
+  },
+  "class___col": {
+    "width": "100%"
+  },
+  "header": {
+    "backgroundColor": "#8db2b3",
+    "color": "#ffffff",
+    "padding": "4px"
+  },
+  "menu_ul": {
+    "listStyleType": "none",
+    "margin": "0",
+    "padding": "0"
+  },
+  "menu_li": {
+    "padding": "30px",
+    "marginBottom": "7px",
+    "backgroundColor": "#5b8591",
+    "color": "#ffffff",
+    "boxShadow": "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)"
+  },
+  "menu_li_hover": {
+    "backgroundColor": "#0099cc"
+  },
+  "menu_bar__menu_bar_item": {
+    "padding": "8px 16px",
+    "float": "left",
+    "width": "15.7%",
+    "marginRight": "7px",
+    "textAlign": "center",
+    "backgroundColor": "#5b8591",
+    "color": "#ffffff",
+    "boxShadow": "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)"
+  },
+  "aside": {
+    "backgroundColor": "#ffffff",
+    "padding": "100px",
+    "color": "#8db2b3",
+    "textAlign": "center",
+    "fontSize": "15px",
+    "boxShadow": "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)"
+  },
+  "footer": {
+    "backgroundColor": "#8db2b3",
+    "color": "#ffffff",
+    "textAlign": "center",
+    "fontSize": "12px",
+    "padding": "4px"
+  },
+  "@media only screen and (min-width: 600px)": {
+    "__expression__": "only screen and (min-width: 600px)",
+    "col_s_1": {
+      "width": "8.33%"
+    },
+    "col_s_2": {
+      "width": "16.66%"
+    },
+    "col_s_3": {
+      "width": "25%"
+    },
+    "col_s_4": {
+      "width": "33.33%"
+    },
+    "col_s_5": {
+      "width": "41.66%"
+    },
+    "col_s_6": {
+      "width": "50%"
+    },
+    "col_s_7": {
+      "width": "58.33%"
+    },
+    "col_s_8": {
+      "width": "66.66%"
+    },
+    "col_s_9": {
+      "width": "75%"
+    },
+    "col_s_10": {
+      "width": "83.33%"
+    },
+    "col_s_11": {
+      "width": "91.66%"
+    },
+    "col_s_12": {
+      "width": "100%"
+    }
+  },
+  "@media only screen and (min-width: 768px)": {
+    "__expression__": "only screen and (min-width: 768px)",
+    "col_1": {
+      "width": "8.33%"
+    },
+    "col_2": {
+      "width": "16.66%"
+    },
+    "col_3": {
+      "width": "25%"
+    },
+    "col_4": {
+      "width": "33.33%"
+    },
+    "col_5": {
+      "width": "41.66%"
+    },
+    "col_6": {
+      "width": "50%"
+    },
+    "col_7": {
+      "width": "58.33%"
+    },
+    "col_8": {
+      "width": "66.66%"
+    },
+    "col_9": {
+      "width": "75%"
+    },
+    "col_10": {
+      "width": "83.33%"
+    },
+    "col_11": {
+      "width": "91.66%"
+    },
+    "col_12": {
+      "width": "100%"
+    }
+  }
 }
