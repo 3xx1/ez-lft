@@ -31,33 +31,33 @@ import imutils
 
 
 # Required information for each scanned image
-Distance_control_test = 90
-Distance_control_background = 54
-Distance_control_background2 = 126
+Distance_control_test = 164
+Distance_control_background = 89
+Distance_control_background2 = 239
 
-ROI_test_box_width = 26
-ROI_test_box_height = 48
+ROI_test_box_width = 80
+ROI_test_box_height = 100
 
-ROI_background_box_width = 26
-ROI_background_box_height = 24
+ROI_background_box_width = 80
+ROI_background_box_height = 50
 
-ROI_background2_box_width = 26
-ROI_background2_box_height = 24
+ROI_background2_box_width = 80
+ROI_background2_box_height = 50
 
 
 # Upload and resize the scanned image
-I_raw = cv2.imread('images/LFT_example.png')
-I_resize = cv2.resize(I_raw, (638, 292))
+I_raw = cv2.imread('images/LFT_example2.png')
+#I_resize = cv2.resize(I_raw, (797, 373))
 
 #blur to extract edge
-I = cv2.blur(I_resize, (5, 10))
+I = cv2.blur(I_raw, (5, 10))
 
 # HSV to extract edge
 hsv = cv2.cvtColor(I, cv2.COLOR_BGR2HSV)
 
 # thresholds to detect test lines as edge extraction by Canny
-lower_red = np.array([0,34,50])
-upper_red = np.array([6,255,255])
+lower_red = np.array([0,30,150])
+upper_red = np.array([180,255,200])
 
 mask = cv2.inRange(hsv, lower_red, upper_red)
 #res = cv2.bitwise_and(I,I, mask= mask)
@@ -79,7 +79,7 @@ for (i, c) in enumerate(cnts):
     approx = cv2.approxPolyDP(c, 0.04 * peri, True)
     x, y, w, h = cv2.boundingRect(approx)
 
-    if w >= 42 and h >= 10:
+    if w >= 65 and w <= 110 and h >= 3 and h <= 35:
         # if width and height are enough
         # create rectangle for bounding
         rect = (x, y, w, h)
@@ -148,23 +148,24 @@ for (i, c) in enumerate(cnts):
         #cv2.putText(I, "#{}".format(i + 1), (rect[0]+(rect[2]/2) - 20, rect[1]+(rect[3]/2) - 15), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2)
 
         # output to text file
-        #lines = ['roi_corrected_0to1', str(roi_corrected_0to1), 'roi_test_avg_intensity', str(roi_test_avg_intensity), 'roi_background_avg_intensity', str(roi_background_avg_intensity)]
+        #lines = [str(results)]
         #with open('output.txt', 'w') as file:
-        #    file.write('\n'.join(lines))
+            #file.write('\n'.join(lines))
 
         #file.close()
 
         plt.subplot(223)
-        plt.imshow(cv2.cvtColor(I_resize, cv2.COLOR_BGR2RGB))
+        plt.imshow(cv2.cvtColor(I_raw, cv2.COLOR_BGR2RGB))
         plt.title("Raw image")
         plt.xlabel("x-coordinate (pixel)")
         plt.ylabel("y-coordinate (pixel)")
 
         plt.subplot(224)
-        plt.imshow(cv2.cvtColor(I, cv2.COLOR_BGR2RGB))
+        plt.imshow(cv2.cvtColor(I, cv2.COLOR_BGR2HSV))
         plt.title("ROI on image")
         plt.xlabel("x-coordinate (pixel)")
         plt.ylabel("y-coordinate (pixel)")
 
-
+
+
 plt.show()
